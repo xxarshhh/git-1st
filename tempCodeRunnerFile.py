@@ -1,13 +1,29 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import pandas as pd
 
+import fitz  # PyMuPDF
 
-# Sample documents
-documents = [
-    "This is a sample document to extract keywords.",
-    "TF-IDF is a statistical measure used to evaluate the importance of a word in a document.",
-    "We will use TF-IDF to extract keywords from these documents."
-]
+def pdf_to_text(pdf_path):
+    # Open the PDF file
+    pdf_document = fitz.open(pdf_path)
+    
+    # Initialize a text string
+    text = ""
+    
+    # Loop through each page
+    for page_num in range(pdf_document.page_count):
+        page = pdf_document.load_page(page_num)  # Load each page
+        text += page.get_text()  # Extract text from the page
+    
+    return text
+
+# Path to the PDF file
+pdf_path = '"C:\Users\91821\Downloads\Carlsson_HEAL-SWIN_A_Vision_Transformer_On_The_Sphere_CVPR_2024_paper.pdf"'
+
+# Convert PDF to text
+documents = pdf_to_text(pdf_path)
+
+
 
 # Initialize the TFIDF vectorizer
 vectorizer = TfidfVectorizer()
